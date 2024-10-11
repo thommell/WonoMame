@@ -1,2 +1,4 @@
-﻿using var game = new WonoMane.Game1();
+﻿using WonoMane.WonoEngine;
+
+using var game = new Game1();
 game.Run();

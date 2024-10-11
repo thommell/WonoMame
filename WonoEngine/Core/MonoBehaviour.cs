@@ -1,6 +1,4 @@
-﻿using WonoMane.WonoEngine.Core;
-
-namespace WonoMane.Core;
+﻿namespace WonoMane.WonoEngine.Core;
 
 public abstract class MonoBehaviour
 {
@@ -13,4 +11,8 @@ public abstract class MonoBehaviour
     public abstract void LoadContent();
     public virtual void Awake() {}
     public GameObject SetObjectOwner(GameObject pOwner) => owner = pOwner;
+    public T GetComponent<T>() where T : MonoBehaviour
+    {
+        return owner.GetComponent<T>();
+    }
 }

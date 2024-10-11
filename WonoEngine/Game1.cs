@@ -1,19 +1,16 @@
-﻿using System.Reflection.Metadata;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using WonoMane.Core.Behaviours;
 using WonoMane.WonoEngine.Core;
 using WonoMane.WonoEngine.Core.Behaviours;
 
-namespace WonoMane;
+namespace WonoMane.WonoEngine;
 
 public class Game1 : Game
 {
     private GameObject _object;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -25,7 +22,7 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Utility.GameInstance = this;
         Utility.FontInstance = Content.Load<SpriteFont>("Font");
-        _object = new GameObject("Enemy", new Transform(new Vector2(400, 200)), new SpriteRenderer("Enemy"));
+        _object = new GameObject("Enemy", new Transform(new Vector2(200, 200)), new SpriteRenderer("Enemy"), new BoxCollider2D());
         _object.LoadContent();
     }
     protected override void Update(GameTime gameTime)

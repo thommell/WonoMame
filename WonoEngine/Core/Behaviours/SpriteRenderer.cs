@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WonoMane.Core;
-using WonoMane.Core.Behaviours;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
 
 namespace WonoMane.WonoEngine.Core.Behaviours;
@@ -22,10 +20,11 @@ public class SpriteRenderer : MonoBehaviour, IComponentDrawer
     public Color Color => _color;
 
     #endregion
+
     public SpriteRenderer(string pSpriteName) => _texture = Utility.GameInstance.Content.Load<Texture2D>(pSpriteName);
     public override void LoadContent()
     {
-        _transform = owner.GetComponent<Transform>();
+        _transform = GetComponent<Transform>();
         _transform.Origin = _transform.GetOrigin(_texture);
     }
     public void Draw(SpriteBatch pSpriteBatch)
