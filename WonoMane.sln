@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WonoMane", "WonoMane.csproj", "{3C4057D9-DFCA-4254-B452-3B2C4F2AEBD3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C4057D9-DFCA-4254-B452-3B2C4F2AEBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C4057D9-DFCA-4254-B452-3B2C4F2AEBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C4057D9-DFCA-4254-B452-3B2C4F2AEBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C4057D9-DFCA-4254-B452-3B2C4F2AEBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
