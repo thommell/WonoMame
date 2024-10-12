@@ -41,11 +41,6 @@ public class CollisionLogic : WonoBehaviour
     //TODO: Fix proper bounds checking, this is currently always true somehow? xD
     public bool AreObjectsColliding(GameObject obj1, GameObject obj2)
     {
-        if (_colliders.TryGetValue(obj1, out BoxCollider2D coll1) &&
-            _colliders.TryGetValue(obj2, out BoxCollider2D coll2))
-        {
-            return coll1.Hitbox.Intersects(coll2.Hitbox);
-        }
-        return false;
+        return obj1.GetComponent<BoxCollider2D>().Hitbox.Intersects(obj2.GetComponent<BoxCollider2D>().Hitbox);
     }
 }

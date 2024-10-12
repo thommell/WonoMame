@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.Xna.Framework;
 using WonoMane.WonoEngine.Core;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
@@ -42,13 +43,13 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater
             BoxCollider2D other = _collision.Colliders[colliderKey];
             if (_collision.AreObjectsColliding(owner, other.owner))
             {
+                if (ReferenceEquals(owner, other.owner)) continue;
                 owner.GetComponent<BoxCollider2D>().OnCollisionEnter2D(new Collision(other.Hitbox, other.owner, other.GetComponent<Transform>()));
             }
         }
     }
-
     public override void OnCollisionEnter2D(Collision pCollision)
     {
-        Console.WriteLine("test!");
+        Console.WriteLine($"{owner.Name} is interacting with {pCollision.GameObject.Name}");
     }
 }
