@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WonoMane.WonoEngine.Core.Debug;
+namespace WonoMane.WonoEngine.Debug;
 
 internal static class DrawingExtensions {
     /*

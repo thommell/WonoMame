@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using WonoMane.WonoEngine.Components;
 using WonoMane.WonoEngine.Core;
 using WonoMane.WonoEngine.Core.Behaviours;
+using WonoMane.WonoEngine.Core.SceneHandling;
 
 namespace WonoMane.WonoEngine;
 
@@ -22,22 +24,21 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Utility.GameInstance = this;
         Utility.FontInstance = Content.Load<SpriteFont>("Font");
-        _object = new GameObject("Enemy", new Transform(new Vector2(200, 200)), new SpriteRenderer("Enemy"), new BoxCollider2D());
-        _object.LoadContent();
+        SceneManager.Instance.Load();
     }
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
-        _object.Update(gameTime);
+        SceneManager.Instance.Update(gameTime);
         base.Update(gameTime);
     }
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        _object.Draw(_spriteBatch);
+        SceneManager.Instance.Draw(_spriteBatch);
         _spriteBatch.End();
         base.Draw(gameTime);
     }

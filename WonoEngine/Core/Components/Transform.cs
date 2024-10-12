@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WonoMane.WonoEngine.Core;
 
-namespace WonoMane.WonoEngine.Core.Behaviours;
+namespace WonoMane.WonoEngine.Components;
 
-public class Transform : MonoBehaviour
+public class Transform : WonoBehaviour
 {
     private Vector2 _position;
     private Vector2 _origin;

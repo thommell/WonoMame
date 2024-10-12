@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using WonoMane.WonoEngine.Core;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
 
-namespace WonoMane.WonoEngine.Core.Behaviours;
+namespace WonoMane.WonoEngine.Components;
 
-public class SpriteRenderer : MonoBehaviour, IComponentDrawer
+public class SpriteRenderer : WonoBehaviour, IComponentDrawer
 {
     #region Fields
     
