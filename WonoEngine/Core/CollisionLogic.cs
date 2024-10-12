@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using WonoMane.WonoEngine.Components;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
 using WonoMane.WonoEngine.Core.Components;
+using WonoMane.WonoEngine.Core.Data;
 using WonoMane.WonoEngine.Core.SceneHandling;
 
 namespace WonoMane.WonoEngine.Core;
@@ -11,13 +13,39 @@ namespace WonoMane.WonoEngine.Core;
 //TODO: Implement logic for CollisionDetection (all _colliders)
 //TODO: Implement logic for getting the collision info (OnCollisionEnter to make it easier to use.)
 
-public class CollisionLogic : WonoBehaviour, IComponentUpdater
+public class CollisionLogic : WonoBehaviour
 {
-    private Scene _currentActiveScene;
+    
+    #region Fields
+    
     private Dictionary<GameObject, BoxCollider2D> _colliders;
+    
+    #endregion
+    
+    #region Properties
+    
+    public Dictionary<GameObject, BoxCollider2D> Colliders => _colliders;
+    
+    #endregion
     public override void LoadContent()
     {
         _colliders = GetObjectsOfType<BoxCollider2D>();
+        
+        foreach (KeyValuePair<GameObject, BoxCollider2D> entry in _colliders)
+        {
+            GameObject obj = entry.Key; 
+            BoxCollider2D collider = entry.Value; 
+            Console.WriteLine($"GameObject: {obj.Name}, BoxCollider2D: {collider}");
+        }  
     }
-    public void Update(GameTime gameTime) {}
+    //TODO: Fix proper bounds checking, this is currently always true somehow? xD
+    public bool AreObjectsColliding(GameObject obj1, GameObject obj2)
+    {
+        if (_colliders.TryGetValue(obj1, out BoxCollider2D coll1) &&
+            _colliders.TryGetValue(obj2, out BoxCollider2D coll2))
+        {
+            return coll1.Hitbox.Intersects(coll2.Hitbox);
+        }
+        return false;
+    }
 }

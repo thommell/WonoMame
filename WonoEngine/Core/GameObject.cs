@@ -35,7 +35,7 @@ public class GameObject
         _name = pObjectName;
         _transform = pTransform;
         _behaviours.Add(pTransform);
-        SetBehaviour(pBehaviours, ref _behaviours);
+        SetBehaviour(pBehaviours.ToList(), ref _behaviours);
         //Dont fuck with this here flimsy asf
         _behaviours.ForEach(wonoBehaviour => SetOwner(ref wonoBehaviour, this));
         _behaviours.ForEach(wonoBehaviour => SetScene(ref wonoBehaviour, SceneManager.Instance.ActiveScene));
@@ -62,24 +62,28 @@ public class GameObject
             _componentDrawers[i].Draw(pSpriteBatch);
         } 
         var hb = GetComponent<BoxCollider2D>();
+        if (hb == null) return;
         pSpriteBatch.DrawRectangle(hb.Hitbox, Color.Yellow);
     }
-    private void SetBehaviour(WonoBehaviour[] pBehaviours, ref List<WonoBehaviour> pBehaviourList)
+    private void SetBehaviour(List<WonoBehaviour> pBehaviour, ref List<WonoBehaviour> pOutBehaviourList)
     {
-        foreach (WonoBehaviour behaviour in pBehaviours)
+        for (int i = pBehaviour.Count - 1; i >= 0; i--) 
         {
-            pBehaviourList.Add(behaviour);
-            switch (behaviour)
+            pOutBehaviourList.Add(pBehaviour[i]);
+            if (pBehaviour[i] is BoxCollider2D)
+                pOutBehaviourList.Add(new CollisionLogic());
+            SetComponent(pBehaviour[i]);
+        }
+        void SetComponent(WonoBehaviour pBehaviour)
+        {
+            if (pBehaviour is IComponentDrawer drawer)
             {
-                case IComponentDrawer drawer:
-                    _componentDrawers.Add(drawer);
-                    break;
-                case IComponentUpdater updater:
-                    _componentUpdaters.Add(updater);
-                    break;
+                _componentDrawers.Add(drawer);
             }
-            if (behaviour is BoxCollider2D)
-                pBehaviourList.Add(new CollisionLogic());
+            else if (pBehaviour is IComponentUpdater updater)
+            {
+                _componentUpdaters.Add(updater);
+            }
         }
     }
     private void SetOwner(ref WonoBehaviour pBehaviour, GameObject pOwner)

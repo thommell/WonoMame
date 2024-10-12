@@ -25,6 +25,11 @@ public class Transform : WonoBehaviour
         _position += pPosition;
         OnPositionChanged?.Invoke();
     }
+    public void SetPosition(Vector2 pPosition)
+    {
+        _position = pPosition;
+        OnPositionChanged?.Invoke();
+    }
     public Vector2 GetOrigin(Texture2D pTexture) => new (pTexture.Width * 0.5f, pTexture.Height * 0.5f);
     public override void LoadContent() {}
 }

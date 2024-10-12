@@ -12,6 +12,7 @@ public abstract class WonoBehaviour
     protected GameObject owner;
     protected Scene activeScene;
     public GameObject SetObjectOwner(GameObject pOwner) => owner = pOwner;
+    public GameObject Owner => owner;
     public Scene SetActiveScene(Scene pScene) => activeScene = pScene;
     public T GetComponent<T>() where T : WonoBehaviour
     {
