@@ -35,4 +35,13 @@ public abstract class Scene
             ObjectsInScene[i].Draw(pSpriteBatch);
         }
     }
+
+    protected virtual void AddGameObject(GameObject pObject)
+    {
+        ObjectsInScene.Add(pObject);
+    }
+    protected virtual void AddGameObjects(params GameObject[] pObjects)
+    {
+        ObjectsInScene.AddRange(pObjects);
+    }
 }

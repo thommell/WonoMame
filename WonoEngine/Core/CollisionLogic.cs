@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
 using WonoMane.WonoEngine.Components;
-using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
-using WonoMane.WonoEngine.Core.Components;
-using WonoMane.WonoEngine.Core.Data;
-using WonoMane.WonoEngine.Core.SceneHandling;
 
 namespace WonoMane.WonoEngine.Core;
-
-//If a collision happens between the "_colliders" I want to be able to handle it here, get the "Collision" information from the Collision class.
-//TODO: Implement logic for CollisionDetection (all _colliders)
-//TODO: Implement logic for getting the collision info (OnCollisionEnter to make it easier to use.)
 
 public class CollisionLogic : WonoBehaviour
 {
@@ -30,17 +20,16 @@ public class CollisionLogic : WonoBehaviour
     public override void LoadContent()
     {
         _colliders = GetObjectsOfType<BoxCollider2D>();
-        
-        foreach (KeyValuePair<GameObject, BoxCollider2D> entry in _colliders)
-        {
-            GameObject obj = entry.Key; 
-            BoxCollider2D collider = entry.Value; 
-            Console.WriteLine($"GameObject: {obj.Name}, BoxCollider2D: {collider}");
-        }  
     }
-    //TODO: Fix proper bounds checking, this is currently always true somehow? xD
+    /// <summary>
+    /// Collision check with the 2 given GameObjects.
+    /// </summary>
+    /// <returns>Returns true on intersection, false if not or if there are no <see cref="BoxCollider2D"/>'s on any GameObject.</returns>
     public bool AreObjectsColliding(GameObject obj1, GameObject obj2)
     {
-        return obj1.GetComponent<BoxCollider2D>().Hitbox.Intersects(obj2.GetComponent<BoxCollider2D>().Hitbox);
+        if (_colliders.TryGetValue(obj1, out BoxCollider2D collider1) &&
+            _colliders.TryGetValue(obj2, out BoxCollider2D collider2))
+            return collider1.Hitbox.Intersects(collider2.Hitbox);
+        return false;
     }
 }

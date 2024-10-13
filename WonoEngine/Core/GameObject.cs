@@ -61,26 +61,26 @@ public class GameObject
         {
             _componentDrawers[i].Draw(pSpriteBatch);
         } 
-        var hb = GetComponent<BoxCollider2D>();
-        if (hb == null) return;
-        pSpriteBatch.DrawRectangle(hb.Hitbox, Color.Yellow);
     }
-    private void SetBehaviour(List<WonoBehaviour> pBehaviour, ref List<WonoBehaviour> pOutBehaviourList)
+    private void SetBehaviour(List<WonoBehaviour> pBehaviour, ref List<WonoBehaviour> pBehaviourList)
     {
         for (int i = pBehaviour.Count - 1; i >= 0; i--) 
         {
-            pOutBehaviourList.Add(pBehaviour[i]);
+            pBehaviourList.Add(pBehaviour[i]);
             if (pBehaviour[i] is BoxCollider2D)
-                pOutBehaviourList.Add(new CollisionLogic());
+                pBehaviourList.Add(new CollisionLogic());
             SetComponent(pBehaviour[i]);
         }
+
+        return;
+
         void SetComponent(WonoBehaviour pBehaviour)
         {
             if (pBehaviour is IComponentDrawer drawer)
             {
                 _componentDrawers.Add(drawer);
             }
-            else if (pBehaviour is IComponentUpdater updater)
+            if (pBehaviour is IComponentUpdater updater)
             {
                 _componentUpdaters.Add(updater);
             }
@@ -93,7 +93,6 @@ public class GameObject
     private void SetScene(ref WonoBehaviour pBehaviour, Scene pScene)
     {
         pBehaviour.SetActiveScene(pScene);
-        Console.WriteLine();
     }
     public T GetComponent<T>() where T : WonoBehaviour
     {
