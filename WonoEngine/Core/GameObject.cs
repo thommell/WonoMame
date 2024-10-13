@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using WonoMane.WonoEngine.Components;
 using WonoMane.WonoEngine.Core.Behaviours;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
+using WonoMane.WonoEngine.Core.Components;
 using WonoMane.WonoEngine.Core.SceneHandling;
 using WonoMane.WonoEngine.Debug;
 

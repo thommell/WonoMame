@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WonoMane.WonoEngine.Components;
+using WonoMane.WonoEngine.Core.Components;
 
 namespace WonoMane.WonoEngine.Core;
 

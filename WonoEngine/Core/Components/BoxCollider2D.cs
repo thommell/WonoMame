@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Net;
+using System.Transactions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WonoMane.WonoEngine.Core;
+using WonoMane.WonoEngine.Components;
 using WonoMane.WonoEngine.Core.Behaviours.BehaviourHandlers;
 using WonoMane.WonoEngine.Core.Data;
 using WonoMane.WonoEngine.Debug;
 
-namespace WonoMane.WonoEngine.Components;
+namespace WonoMane.WonoEngine.Core.Components;
 
 public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
 {
@@ -23,6 +23,7 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
     public delegate void OnCollisionHandler(Collision pCollision);
     public event OnCollisionHandler OnCollisionEnter;
     public event OnCollisionHandler OnCollisionExit;
+    public event OnCollisionHandler OnCollisionStay;
     #endregion
     
     #region Properties
@@ -39,6 +40,7 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
         _collision = GetComponent<CollisionLogic>();
         _transform.OnPositionChanged += SetHitBox;
         OnCollisionEnter += OnCollisionEnter2D;
+        OnCollisionStay += OnCollisionStay2D;
         OnCollisionExit += OnCollisionExit2D;
         OnCollisionExit += DumpCollisionInfo;
         SetHitBox();
@@ -57,17 +59,27 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
     }
     private void CheckCollision()
     {
-        foreach (var colliderKey in _collision.Colliders.Keys)
+        //Loops through every found BoxCollider2D in the scene
+        foreach (var other in _collision.Colliders.Values)
         {
-            BoxCollider2D other = _collision.Colliders[colliderKey];
+            //Continue through if it's checking its own instance.
             if (ReferenceEquals(owner, other.owner)) continue;
-            if (_collision.AreObjectsColliding(owner, other.owner))
+            //Check if the owner's BoxCollider2D is colliding with any other
+            var areObjectsColliding = _collision.AreObjectsColliding(owner, other.owner);
+            //On first collision
+            if (!_isColliding && areObjectsColliding)
             {
                 _isColliding = true;
                 _colliderInfo = new Collision(other.Hitbox, other.owner, other.owner.Transform);
                 OnCollisionEnter?.Invoke(_colliderInfo);
             }
-            else if (_isColliding && !_collision.AreObjectsColliding(owner, other.owner))
+            //On each collision except first one
+            else if (_isColliding && areObjectsColliding)
+            {
+                OnCollisionStay?.Invoke(_colliderInfo);
+            }
+            //After last collision
+            else if (_isColliding && !areObjectsColliding)
             {
                 _isColliding = false;
                 OnCollisionExit?.Invoke(_colliderInfo);
@@ -75,6 +87,10 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
         }
     }
     public override void OnCollisionEnter2D(Collision pCollision)
+    {
+        Console.WriteLine($"{owner.Name} started interacting with {pCollision.GameObject.Name}");
+    }
+    public override void OnCollisionStay2D(Collision pCollision)
     {
         Console.WriteLine($"{owner.Name} is interacting with {pCollision.GameObject.Name}");
     }
