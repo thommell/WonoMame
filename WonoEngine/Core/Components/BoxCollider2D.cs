@@ -9,7 +9,7 @@ using WonoMane.WonoEngine.Debug;
 
 namespace WonoMane.WonoEngine.Core.Components;
 
-public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
+public class BoxCollider2D : WonoComponent, IComponentUpdater, IComponentDrawer
 {
     #region Fields
 
@@ -17,7 +17,6 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
     private Transform _transform;
     private SpriteRenderer _spriteRenderer;
     private CollisionLogic _collision;
-    private bool _isColliding;
     private Collision _colliderInfo;
 
     public delegate void OnCollisionHandler(Collision pCollision);
@@ -29,11 +28,10 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
     #region Properties
 
     public Rectangle Hitbox {get => _hitBox; set => _hitBox = value; }
-    public bool IsColliding { get => _isColliding; }
     
     #endregion
 
-    public override void LoadContent()
+    public override void LoadComponent()
     {
         _transform = GetComponent<Transform>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -67,35 +65,38 @@ public class BoxCollider2D : WonoBehaviour, IComponentUpdater, IComponentDrawer
             //Check if the owner's BoxCollider2D is colliding with any other
             var areObjectsColliding = _collision.AreObjectsColliding(owner, other.owner);
             //On first collision
-            if (!_isColliding && areObjectsColliding)
+            if (!_collision.IsColliding&& areObjectsColliding)
             {
-                _isColliding = true;
+                _collision.IsColliding = true;
                 _colliderInfo = new Collision(other.Hitbox, other.owner, other.owner.Transform);
                 OnCollisionEnter?.Invoke(_colliderInfo);
             }
             //On each collision except first one
-            else if (_isColliding && areObjectsColliding)
+            else if (_collision.IsColliding && areObjectsColliding)
             {
                 OnCollisionStay?.Invoke(_colliderInfo);
             }
             //After last collision
-            else if (_isColliding && !areObjectsColliding)
+            else if (_collision.IsColliding && !areObjectsColliding)
             {
-                _isColliding = false;
+                _collision.IsColliding = false;
                 OnCollisionExit?.Invoke(_colliderInfo);
             }
         }
     }
     public override void OnCollisionEnter2D(Collision pCollision)
     {
+        _spriteRenderer.Color = Color.Red;
         Console.WriteLine($"{owner.Name} started interacting with {pCollision.GameObject.Name}");
     }
     public override void OnCollisionStay2D(Collision pCollision)
     {
+        _spriteRenderer.Color = Color.Blue;
         Console.WriteLine($"{owner.Name} is interacting with {pCollision.GameObject.Name}");
     }
     public override void OnCollisionExit2D(Collision pCollision)
     { 
+        _spriteRenderer.Color = Color.White;
         Console.WriteLine($"{owner.Name} has stopped interacting with {pCollision.GameObject.Name}!");
     }
     /// <summary>

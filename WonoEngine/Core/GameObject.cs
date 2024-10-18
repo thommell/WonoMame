@@ -19,34 +19,34 @@ public class GameObject
     
     private Transform _transform;
     private string _name;
-    private List<WonoBehaviour> _behaviours = [];
+    private List<WonoComponent> _components = [];
     private List<IComponentDrawer> _componentDrawers = [];
     private List<IComponentUpdater> _componentUpdaters = [];
     protected CollisionLogic collisionLogic;
     #endregion
     #region Properties
 
-    public List<WonoBehaviour> Behaviours => _behaviours;
+    public List<WonoComponent> Components => _components;
     public Transform Transform => _transform;
     public string Name => _name;
 
     #endregion
-    public GameObject(string pObjectName, Transform pTransform, params WonoBehaviour[] pBehaviours)
+    public GameObject(string pObjectName, Transform pTransform, params WonoComponent[] pBehaviours)
     {
         _name = pObjectName;
         _transform = pTransform;
-        _behaviours.Add(pTransform);
-        SetBehaviour(pBehaviours.ToList(), ref _behaviours);
+        _components.Add(pTransform);
+        SetComponent(pBehaviours.ToList(), ref _components);
         //Dont fuck with this here flimsy asf
-        _behaviours.ForEach(wonoBehaviour => SetOwner(ref wonoBehaviour, this));
-        _behaviours.ForEach(wonoBehaviour => SetScene(ref wonoBehaviour, SceneManager.Instance.ActiveScene));
+        _components.ForEach(wonoBehaviour => SetOwner(ref wonoBehaviour, this));
+        _components.ForEach(wonoBehaviour => SetScene(ref wonoBehaviour, SceneManager.Instance.ActiveScene));
     }
 
     public void LoadContent()
     {
-        for (int i = _behaviours.Count - 1; i >= 0; i--)
+        for (int i = _components.Count - 1; i >= 0; i--)
         {
-            _behaviours[i].LoadContent();
+            _components[i].LoadComponent();
         }
     }
     public void Update(GameTime pGameTime)
@@ -63,7 +63,7 @@ public class GameObject
             _componentDrawers[i].Draw(pSpriteBatch);
         } 
     }
-    private void SetBehaviour(List<WonoBehaviour> pBehaviour, ref List<WonoBehaviour> pBehaviourList)
+    private void SetComponent(List<WonoComponent> pBehaviour, ref List<WonoComponent> pBehaviourList)
     {
         for (int i = pBehaviour.Count - 1; i >= 0; i--) 
         {
@@ -75,7 +75,7 @@ public class GameObject
 
         return;
 
-        void SetComponent(WonoBehaviour pBehaviour)
+        void SetComponent(WonoComponent pBehaviour)
         {
             if (pBehaviour is IComponentDrawer drawer)
             {
@@ -87,19 +87,19 @@ public class GameObject
             }
         }
     }
-    private void SetOwner(ref WonoBehaviour pBehaviour, GameObject pOwner)
+    private void SetOwner(ref WonoComponent pBehaviour, GameObject pOwner)
     {
         pBehaviour.SetObjectOwner(pOwner);
     }
-    private void SetScene(ref WonoBehaviour pBehaviour, Scene pScene)
+    private void SetScene(ref WonoComponent pBehaviour, Scene pScene)
     {
         pBehaviour.SetActiveScene(pScene);
     }
-    public T GetComponent<T>() where T : WonoBehaviour
+    public T GetComponent<T>() where T : WonoComponent
     {
-        for (int i = 0; i < _behaviours.Count; i++)
+        for (int i = 0; i < _components.Count; i++)
         {
-            if (_behaviours[i] is T behaviour)
+            if (_components[i] is T behaviour)
                 return behaviour;
         }
         return null;

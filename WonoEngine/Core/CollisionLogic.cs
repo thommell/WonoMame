@@ -4,21 +4,27 @@ using WonoMane.WonoEngine.Core.Components;
 
 namespace WonoMane.WonoEngine.Core;
 
-public class CollisionLogic : WonoBehaviour
+public class CollisionLogic : WonoComponent
 {
     
     #region Fields
     
     private Dictionary<GameObject, BoxCollider2D> _colliders;
+    private bool _isColliding;
     
     #endregion
     
     #region Properties
     
     public Dictionary<GameObject, BoxCollider2D> Colliders => _colliders;
-    
+    public bool IsColliding
+    {
+        get => _isColliding;
+        set => _isColliding = value;
+    }
+
     #endregion
-    public override void LoadContent()
+    public override void LoadComponent()
     {
         _colliders = GetObjectsOfType<BoxCollider2D>();
     }

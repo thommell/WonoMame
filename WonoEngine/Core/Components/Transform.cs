@@ -1,14 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WonoMane.WonoEngine.Core;
 
-namespace WonoMane.WonoEngine.Components;
+namespace WonoMane.WonoEngine.Core.Components;
 
-public class Transform : WonoBehaviour
+public class Transform : WonoComponent
 {
     private Vector2 _position;
     private Vector2 _origin;
+    private float _rotation;
     public Vector2 Position => _position;
+    public float Rotation => _rotation;
     public delegate void OnPositionChange();
     public event OnPositionChange OnPositionChanged;
     public Vector2 Origin
@@ -31,5 +32,4 @@ public class Transform : WonoBehaviour
         OnPositionChanged?.Invoke();
     }
     public Vector2 GetOrigin(Texture2D pTexture) => new (pTexture.Width * 0.5f, pTexture.Height * 0.5f);
-    public override void LoadContent() {}
 }
